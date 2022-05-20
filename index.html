@@ -1,58 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Tip calculator app</title>
-    <link rel="stylesheet" href="tipcalculator.css"/>
-    
-</head>
-  <body>
-    <div class="logo"><img src="images/logo.svg" alt="" /></div>
-    <div class="tip-calculator">
-      <div class="partOne">
-        <label for="">Bill</label>
-        <input type="number" class="input bill-input" id="bill-input">
-        <label for="">Select Tip %</label>
-        <div class="tip">
-          <div class="tips tip-5">5%</div>
-          <div class="tips tip-10">10%</div>
-          <div class="tips active-tip tip-15">15%</div>
-          <div class="tips tip-25">25%</div>
-          <div class="tips tip-50">50%</div>
-          <div  id="tip-custom"><input class="tip-custom" type="number" placeholder="CUSTOM"></div>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png"  sizes="32x32"href="./images/favicon-32x32.png"/>
+    <title> Tip calculator app</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link rel ="stylesheet" href="tipcalculator.css">
+  </head>
+  <body onload="calculate()">
+    <div id="title" class="marg-btm">
+      <p>SPLI</p>
+      <p>TTER</p>
+    </div>
+    <div id="container" class="marg-btm">
+      <div id="customize-tip">
+        <div id="bill" class="relative marg-btm">
+          <h1 class="headings">Bill</h1>
+          <input type="number" name="bill" id="input-bill" class="input" value="0.00" oninput="twoDecimals(this)">
+          <img class="input-icons" src="images/icon-dollar.svg" alt="icon-dollar"/>
         </div>
-        <div class="peopleLabel">
-          <label for="">Number of People</label>
-          <label for="" class="error">Can't be Zero</label>
-        </div>
-        <input type="number" class="input people-input">
-      </div>
-      
-
-      <div class="result">
-        <div class="tip-amount">
-          <div class="text">
-            <p>Tip Amount</p>
-            <p class="person">/ person</p>
+         <div id="tip" class="marg-btm">
+          <h1 class="headings">Select Tip %</h1>
+          <div id="tip-btns">
+            <button class="tip-btn tip-input" value="5">5%</button>
+            <button class="tip-btn tip-input" value="10">10%</button>
+            <button class="tip-btn tip-input" value="15">15%</button>
+            <button class="tip-btn tip-input" value="25">25%</button>
+            <button class="tip-btn tip-input" value="50">50%</button>
+            <input type="number" name="custom" id="custom" maxlength="3" placeholder="Custom"/>
           </div>
-          <div class="amount" id="tip-amount"></div>
         </div>
-        <div class="total">
-          <div class="text">
-            <p>Total</p>
-            <p class="person">/ person</p>
-          </div>
-          <div class="amount" id="total-amount"></div>
+        <div id="people" class="relative">
+          <h1 class="headings">Number of People</h1>
+          <p id="error-msg">Can't be zero</p>
+          <input type="number" name="people" id="input-people" class="input" value="1"/>
+          <img class="input-icons" src="images/icon-person.svg" alt="icon-person"/>
         </div>
-        <div class="reset">RESET</div>
       </div>
-    <div>
-      <script src="tipcalculator.js"></script>
+       <div id="calculation">
+        <div id="tip-amt" class="marg-btm calc-grid">
+          <div class="display-labels">
+            <h1 class="headings">Tip Amount</h1>
+            <p class="p-person">/ person</p>
+          </div>
+          <p id="display-tip-amt" class="display-calc"></p>
+        </div>
+        <div id="total" class="marg-btm calc-grid">
+          <div class="display-labels">
+            <h1 class="headings">Total</h1>
+            <p class="p-person">/ person</p>
+          </div>
+          <p id="display-total-amt" class="display-calc"></p>
+        </div>
+        <button type="submit" id="reset">RESET</button>
+      </div>
+    </div>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="tipcalculator.js"></script>
   </body>
 </html>
-
-
-
-
-
