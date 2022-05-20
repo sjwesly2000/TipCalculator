@@ -1,99 +1,97 @@
-const billInput = document.querySelector(".bill-input");                                
-const peopleInput = document.querySelector(".people-input");
-const tips = document.querySelectorAll(".tips");
-const tipPerPerson = document.getElementById("tip-amount");
-const totalPerPerson = document.getElementById("total-amount");
-const resetBtn = document.querySelector(".reset");
-const tipCustom = document.querySelector(".tip-custom");
-const error = document.querySelector(".error");
+let billInput = $("#input-bill");
+let peopleInput = $("#input-people");
+let displayTip = $("#display-tip-amt");
+let displayTotal = $("#display-total-amt");
+let tipInputs = $(".tip-input");
+let custom = $("#custom");
+let reset = $("#reset");
+let tipAmount = 0;
+let billAmount = 0;
+let noOfPeople = 1;
 
-billInput.addEventListener("input", billInputFun);
-peopleInput.addEventListener("input", peopleInputFun);
-tips.forEach(function (val) {
-  val.addEventListener("click", handleClick);
+$("#input-bill").focusout(() => {
+  billAmount = Number($("#input-bill").val());
+  $("#input-bill").val(billAmount.toFixed(2));
+  calculate();
 });
-resetBtn.addEventListener("click", reset);
-tipCustom.addEventListener("input", tipInputFun);
 
-billInput.value = "0.0";
-peopleInput.value = "1";
-tipPerPerson.innerHTML = "$" + (0.0).toFixed(2);
-totalPerPerson.innerHTML = "$" + (0.0).toFixed(2);
-
-let billValue = 0.0;
-let peopleValue = 1;
-let tipValue = 0.15;
-
-function billInputFun() 
-{
-  billValue = parseFloat(billInput.value);
-  calculateTip();
-}
-
-function tipInputFun() 
-{
-  tipValue = parseFloat(tipCustom.value / 100);
-
-  tips.forEach(function (val) {
-    val.classList.remove("active-tip");
+for (let i = 0; i < tipInputs.length; i++) {
+  $(tipInputs[i]).click(() => {
+    toggleTipBtns();
+    $("#custom").val("");
+    $(tipInputs[i]).addClass("clicked");
+    tipAmount = Number($(tipInputs[i]).attr("value"));
+    calculate();
   });
-  calculateTip();
 }
 
-function peopleInputFun() 
-{
-  peopleValue = parseFloat(peopleInput.value);
+$("#custom").focusout(() => {
+  toggleTipBtns();
+  tipAmount = Number($("#custom").val());
+  calculate();
+});
 
-  if (peopleValue < 1) 
-  {
-    error.style.display = "flex";
-    peopleInput.style.border = "thick solid red";
-  } 
-  else 
-  {
-    error.style.display = "none";
-    peopleInput.style.border = "none";
-    calculateTip();
-  }
-}
-
-function handleClick(event) 
-{
-  tips.forEach(function (val) {
-    val.classList.remove("active-tip");
-    if (event.target.innerHTML == val.innerHTML) 
-    {
-      val.classList.add("active-tip");
-      tipValue = parseFloat(val.innerHTML) / 100;
+$("#input-people")
+  .focusout(() => {
+    let peopleValue = Number($("#input-people").val());
+    if (peopleValue === 0) {
+      $("#error-msg").css("visibility", "visible");
+      $("#input-people").addClass("error");
+    } 
+    else {
+      noOfPeople = peopleValue;
+      calculate();
     }
   });
-  calculateTip();
-}
+  
+  $("#reset").click(() => {
+  $("#input-bill").val("0.00");
+  toggleTipBtns();
+  $("#custom").val("");
+  $("#input-people").val("1");
+  tipAmount = 0;
+  billAmount = 0;
+  noOfPeople = 1;
+  calculate();
+});
 
-function calculateTip() 
-{
-  if (peopleValue >= 1) 
-  {
-    let tipAmount = (billValue * tipValue) / peopleValue;
-    let total = (billValue + tipAmount) / peopleValue;
-    tipPerPerson.innerHTML = "$" + tipAmount.toFixed(2);
-    totalPerPerson.innerHTML = "$" + total.toFixed(2);
+ const calculate = () => {
+  let tipPerPerson = Number((billAmount * (tipAmount / 100)) / noOfPeople);
+  let totalPerPerson = Number(billAmount / noOfPeople + tipPerPerson);
+  displayTip.text("$" + tipPerPerson.toFixed(2));
+  displayTotal.text("$" + totalPerPerson.toFixed(2));
+};
+
+const toggleTipBtns = () => {
+  for (let i = 0; i < tipInputs.length; i++) {
+    if ($(tipInputs[i]).hasClass("clicked")) {
+      $(tipInputs[i]).removeClass("clicked");
+    }
   }
-}
+};
+$("#input-people").attr({
+  "max" : "",
+  "min" : 0
+});
+ 
+$("#custom").attr({
+  "max" : 100,
+  "min" : 0
+  })
 
-function reset() 
-{
-  billInput.value = "0.0";
-  billInputFun();
-  peopleInput.value = "1";
-  peopleInputFun();
-  tipCustom.value = "";
-}                                   
+ $("#custom").on('keyup keydown change', function(e){
+    console.log($(this).val() > 100)
+        if ($(this).val() > 100 
+            && e.keyCode !== 46
+            && e.keyCode !== 8
+           ) {
+           e.preventDefault();     
+           $(this).val(100);
+        }
+    });
 
 
 
-
-                               
 
 
 
